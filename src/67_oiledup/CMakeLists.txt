@@ -68,6 +68,7 @@ add_executable(uiaos-kernel
 	src/idt/idt.c
 	src/idt/idt.h
 	src/idt/isr_wrapper.asm
+	src/keyboard/keyboard.c
 	src/memory/malloc.c
 	src/memory/memory.c
 	src/memory/memutils.c
@@ -76,7 +77,6 @@ add_executable(uiaos-kernel
     src/kernel.c
     src/kernel.cpp
 	src/memory/new.cpp
-)
 
 # Include directories for the kernel target
 target_include_directories(uiaos-kernel PUBLIC include)

@@ -29,7 +29,9 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     printf("[kernel] GDT installed\n");
 
     idt_init();
-    printf("IDT Starting\n");
+    printf("IDT Starting");
+
+    asm volatile ("sti");
 
     init_kernel_memory(&end);
 
