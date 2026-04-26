@@ -1,7 +1,7 @@
 #ifndef IDT_H
 #define IDT_H
 
-#include <stdint.h>
+#include "libc/stdint.h"
 
 // A table for the different actions
 struct idt_entry {
