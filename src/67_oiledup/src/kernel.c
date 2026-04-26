@@ -5,6 +5,7 @@
 #include "libc/string.h"
 #include "libc/stdio.h"
 #include <multiboot2.h>
+#include "idt/idt.h"
 
 struct multiboot_info {
     uint32_t size;
@@ -19,6 +20,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     (void)mb_info_addr;
 
     printf("Starting up...\n");
+    idt_init();
     
     gdt_install();
     printf("[kernel] GDT installed\n");
@@ -29,6 +31,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     putchar('\n');
     
     printf("[kernel] Video+serial output written, calling kernel_main()\n");
+
+    asm("int $0x0");
 
     // Call cpp kernel_main (defined in kernel.cpp)
     return kernel_main();
