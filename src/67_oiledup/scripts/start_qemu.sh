@@ -2,13 +2,9 @@
 KERNEL_PATH=$1
 DISK_PATH=$2
 
-# Kill any existing QEMU instances to release file locks
-pkill -f "qemu-system-i386" 2>/dev/null
-sleep 0.5
-
 # Start QEMU in the background
 echo "Starting QEMU"
-qemu-system-i386 -S -gdb tcp::1234 -boot d -hda $KERNEL_PATH -hdb $DISK_PATH -m 64 -audiodev sdl,id=sdl1,out.buffer-length=40000 -machine pcspk-audiodev=sdl1 -serial stdio &
+qemu-system-i386 -S -gdb tcp::1234 -boot d -hda $KERNEL_PATH -hdb $DISK_PATH -m 64 -audiodev sdl,id=sdl1,out.buffer-length=40000 -machine pcspk-audiodev=sdl1 -serial pty &
 QEMU_PID=$!
 
 # Function to check if gdb is running
