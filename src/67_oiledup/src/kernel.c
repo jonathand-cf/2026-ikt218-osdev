@@ -23,7 +23,7 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     (void)magic;
     (void)mb_info_addr;
 
-    printf("Starting up...\n");
+    terminal_initialize();
     
     gdt_install();
     printf("[kernel] GDT installed\n");
