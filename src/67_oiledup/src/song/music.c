@@ -1,4 +1,4 @@
-#include "song/song.h"
+#include "song.h"
 
 Note music_1[] = {
     {E5, 250}, {R, 125}, {E5, 125}, {R, 125}, {E5, 125}, {R, 125},
@@ -14,6 +14,7 @@ Note music_1[] = {
     {G4, 125}, {E5, 125}, {G5, 125}, {A5, 125}, {F5, 125}, {G5, 125},
     {R, 125}, {E5, 125}, {C5, 125}, {D5, 125}, {B4, 125}, {R, 125},
 };
+const size_t music_1_len = sizeof(music_1) / sizeof(Note);
 
 Note starwars_theme[] = {
     {A4, 500}, {A4, 500}, {A4, 500}, 
@@ -29,6 +30,7 @@ Note starwars_theme[] = {
 
     {R, 500}
 };
+const size_t starwars_theme_len = sizeof(starwars_theme) / sizeof(Note);
 
 Note battlefield_1942_theme[] = {
     {E4, 500}, {G4, 500}, {B4, 300}, {E5, 200}, 
@@ -45,6 +47,7 @@ Note battlefield_1942_theme[] = {
 
     {R, 500}
 };
+const size_t battlefield_1942_theme_len = sizeof(battlefield_1942_theme) / sizeof(Note);
 
 Note music_2[] = {
     {A4, 200}, {E5, 200}, {A5, 200}, {R, 100}, {A5, 200}, {A5, 200}, {Gs5, 200}, {A5, 200},
@@ -54,6 +57,7 @@ Note music_2[] = {
     {A4, 200}, {E5, 200}, {A5, 200}, {R, 100}, {A5, 200}, {A5, 200}, {Gs5, 200}, {A5, 200},
     {R, 100}, {E5, 200}, {R, 100}, {E5, 200}, {R, 100}, {E5, 200}, {R, 100}, {E5, 200}
 };
+const size_t music_2_len = sizeof(music_2) / sizeof(Note);
 
 Note music_3[] = {
     {E4, 200}, {E4, 200}, {F4, 200}, {G4, 200}, {G4, 200}, {F4, 200}, {E4, 200}, {D4, 200},
@@ -61,6 +65,7 @@ Note music_3[] = {
     {D4, 200}, {D4, 200}, {E4, 200}, {F4, 200}, {F4, 200}, {E4, 200}, {D4, 200}, {C4, 200},
     {A4, 200}, {A4, 200}, {A4, 200}, {G4, 400}
 };
+const size_t music_3_len = sizeof(music_3) / sizeof(Note);
 
 Note music_4[] = {
     {C4, 500}, {D4, 500}, {E4, 500}, {C4, 500},
@@ -72,11 +77,13 @@ Note music_4[] = {
     {C4, 500}, {G3, 500}, {C4, 1000},
     {C4, 500}, {G3, 500}, {C4, 1000}
 };
+const size_t music_4_len = sizeof(music_4) / sizeof(Note);
 
 Note music_5[] = {
     {E4, 375}, {C4, 375}, {D4, 375}, {A3, 375}, {B3, 375}, {D4, 375}, {C4, 375}, {A3, 375},
     {E4, 375}, {C4, 375}, {D4, 375}, {A3, 375}, {B3, 375}, {D4, 375}, {C4, 375}, {A3, 375},
 };
+const size_t music_5_len = sizeof(music_5) / sizeof(Note);
 
 Note music_6[] = {
     {F4, 250}, {F4, 250}, {F4, 250}, {C5, 250}, {A_SHARP4, 250}, {G_SHARP4, 250}, {F4, 500},
@@ -84,3 +91,4 @@ Note music_6[] = {
     {A_SHARP4, 250}, {A_SHARP4, 250}, {A_SHARP4, 250}, {F5, 250}, {D5, 250}, {C5, 250}, {A_SHARP4, 500},
     {A_SHARP4, 250}, {A_SHARP4, 250}, {A_SHARP4, 250}, {F5, 250}, {D5, 250}, {C5, 250}, {A_SHARP4, 500},
 };
+const size_t music_6_len = sizeof(music_6) / sizeof(Note);

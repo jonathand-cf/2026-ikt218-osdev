@@ -1,9 +1,9 @@
-#include "song/song.h"
+#include "song.h"
 #include "speaker/speaker.h"
 #include "libc/stdio.h"
 
 static void delay_ms(uint32_t ms) {
-    for (volatile uint32_t i = 0; i < ms * 1000; i++);
+    for (volatile uint32_t i = 0; i < ms * 10000; i++);
 }
 
 void play_sound(uint32_t frequency);

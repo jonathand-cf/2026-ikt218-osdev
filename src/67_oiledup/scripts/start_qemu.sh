@@ -8,7 +8,7 @@ sleep 0.5
 
 # Start QEMU in the background
 echo "Starting QEMU"
-qemu-system-i386 -S -gdb tcp::1234 -boot d -hda $KERNEL_PATH -hdb $DISK_PATH -m 64 -audiodev sdl,id=sdl1,out.buffer-length=40000 -machine pcspk-audiodev=sdl1 -serial stdio &
+qemu-system-i386 -S -gdb tcp::1234 -boot d -hda $KERNEL_PATH -hdb $DISK_PATH -m 64 -audiodev pa,id=pa1,server=docker.for.mac.host.internal -machine pcspk-audiodev=pa1 -serial stdio &
 QEMU_PID=$!
 
 # Function to check if gdb is running

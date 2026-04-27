@@ -11,12 +11,10 @@ extern "C" void play_music() {
 
     SongPlayer* player = create_song_player();
 
-    while(1) {
-        for(size_t i = 0; i < n_songs; i++) {
-            printf("Playing Song %d...\n", i + 1);
-            player->play_song(&songs[i]);
-            printf("Finished playing the song.\n");
-        }
+    for(size_t i = 0; i < n_songs; i++) {
+        printf("Playing Song %d...\n", i + 1);
+        player->play_song(&songs[i]);
+        printf("Finished playing the song.\n");
     }
 }
 
