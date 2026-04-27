@@ -2,11 +2,7 @@
 #include "libc/stdarg.h"
 #include "libc/stdint.h"
 #include "libc/string.h"
-
-static uint16_t* const vga_buffer = (uint16_t*)0xB8000;
-static size_t vga_row = 0;
-static size_t vga_col = 0;
-static const uint8_t vga_color = 0x0F;
+#include "terminal.h"
 
 static inline void outb(uint16_t port, uint8_t value) {
     __asm__ volatile ("outb %0, %1" : : "a"(value), "Nd"(port));
@@ -32,23 +28,6 @@ static void serial_putchar(char c) {
     while ((inb(0x3F8 + 5) & 0x20) == 0) {
     }
     outb(0x3F8, (uint8_t)c);
-}
-
-static void vga_putchar(char c) {
-    if (c == '\n') {
-        vga_col = 0;
-        vga_row++;
-        return;
-    }
-
-    const size_t index = vga_row * 80 + vga_col;
-    vga_buffer[index] = ((uint16_t)vga_color << 8) | (uint8_t)c;
-
-    vga_col++;
-    if (vga_col >= 80) {
-        vga_col = 0;
-        vga_row++;
-    }
 }
 
 static void write_unsigned(unsigned int value, unsigned int base) {
@@ -94,7 +73,7 @@ int putchar(int ic) {
         serial_putchar('\r');
     }
     serial_putchar(c);
-    vga_putchar(c);
+    terminal_write_char(c);
 
     return ic;
 }

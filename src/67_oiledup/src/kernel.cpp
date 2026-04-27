@@ -19,6 +19,10 @@ extern "C" void play_music() {
 }
 
 int kernel_main(){
+    
+    //Allocation test
+    int* alloc = new int(12);
+    delete alloc;
     printf("Starting up music test...\n");
     play_music();
     
