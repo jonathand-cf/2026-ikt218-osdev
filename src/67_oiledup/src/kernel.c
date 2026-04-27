@@ -8,6 +8,7 @@
 #include "idt/idt.h"
 #include "kernel/memory.h"
 #include "kernel/pit.h"
+#include "terminal.h"
 
 struct multiboot_info {
     uint32_t size;
