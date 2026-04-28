@@ -1,5 +1,6 @@
 #include "kernel/pit.h"
 #include "libc/stdio.h"
+#include "../idt/idt.h"
 
 static inline void outb(uint16_t port, uint8_t value) {
     __asm__ volatile ("outb %0, %1" : : "a"(value), "Nd"(port));
@@ -7,7 +8,8 @@ static inline void outb(uint16_t port, uint8_t value) {
 
 static volatile uint32_t ticks = 0;
 
-void timer_interrupt_handler() {
+void timer_interrupt_handler(registers_t *regs) {
+    (void)regs;
     ticks++;
 }
 
@@ -16,11 +18,12 @@ uint32_t get_current_tick() {
 }
 
 void init_pit() {
+    register_interrupt_handler(32, timer_interrupt_handler);
+
     uint32_t divisor = DIVIDER;
     outb(PIT_CMD_PORT, 0x36);  // channel 0, lobyte/hibyte, square wave
     outb(PIT_CHANNEL0_PORT, (uint8_t)(divisor & 0xFF));
     outb(PIT_CHANNEL0_PORT, (uint8_t)((divisor >> 8) & 0xFF));
-    printf("PIT initialized at %d Hz\n", TARGET_FREQUENCY);
 }
 
 void sleep_busy(uint32_t milliseconds) {
