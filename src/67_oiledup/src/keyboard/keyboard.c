@@ -1,37 +1,73 @@
 #include "keyboard.h"
-#include "../../include/libc/stdio.h"
+#include "libc/stdio.h"
+#include "libc/system.h"
+#include "libc/stdbool.h"
 
-static inline unsigned char inb(unsigned short port) {
-    unsigned char val;
-    __asm__ volatile ("inb %1, %0" : "=a"(val) : "Nd"(port));
-    return val;
-}
+static bool shift_pressed = false;
+static bool caps_lock = false;
 
-static const char scancode_to_ascii[] = {
-    0,   0,  '1', '2', '3', '4', '5', '6',
-   '7', '8', '9', '0', '-', '=',  0,   0,
-   'q', 'w', 'e', 'r', 't', 'y', 'u', 'i',
-   'o', 'p', '[', ']',  0,   0,  'a', 's',
-   'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',
-   '\'','`',  0,  '\\','z', 'x', 'c', 'v',
-   'b', 'n', 'm', ',', '.', '/',  0,   0,
-    0,  ' '
+static const char scancode_to_ascii_lower[] = {
+    0,  27, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', '\b',
+    '\t', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',
+    0, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', '`', 0,
+    '\\', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0, '*',
+    0, ' ', 0
 };
 
-void keyboard_handler(void) {
-    unsigned char scancode;
+static const char scancode_to_ascii_upper[] = {
+    0,  27, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', '\b',
+    '\t', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',
+    0, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', '\"', '~', 0,
+    '|', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 0, '*',
+    0, ' ', 0
+};
 
-    scancode = inb(0x60);
-    
+void keyboard_handler(registers_t *regs) {
+    (void)regs;
+    unsigned char scancode = inb(0x60);
+
+    // Handle shift keys
+    if (scancode == 0x2A || scancode == 0x36) { // Shift pressed
+        shift_pressed = true;
+        return;
+    }
+    if (scancode == 0xAA || scancode == 0xB6) { // Shift released
+        shift_pressed = false;
+        return;
+    }
+
+    // Handle caps lock
+    if (scancode == 0x3A) { // Caps lock pressed
+        caps_lock = !caps_lock;
+        return;
+    }
+
+    // Ignore break codes (key releases)
     if (scancode & 0x80) {
         return;
     }
 
-    char c = scancode_to_ascii[scancode];
+    // Select the correct character based on shift and caps lock
+    bool use_upper = shift_pressed ^ caps_lock;
+
+    // For non-alphabetical keys, caps lock doesn't usually apply
+    // (This is a simplified version, ideally we'd check if the key is a letter)
+    char c;
+    if (scancode < sizeof(scancode_to_ascii_lower)) {
+        // Simple heuristic: if it's a letter, use use_upper. Otherwise, use shift_pressed.
+        char lower = scancode_to_ascii_lower[scancode];
+        if (lower >= 'a' && lower <= 'z') {
+            c = use_upper ? scancode_to_ascii_upper[scancode] : lower;
+        } else {
+            c = shift_pressed ? scancode_to_ascii_upper[scancode] : lower;
+        }
+    } else {
+        return;
+    }
 
     if (c == 0) {
         return;
     }
-    
+
     putchar(c);
 }

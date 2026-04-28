@@ -33,8 +33,6 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     idt_init();
     printf("IDT Starting");
 
-    asm volatile ("sti");
-
     init_kernel_memory(&end);
 
     init_paging();
@@ -42,6 +40,8 @@ int main(uint32_t magic, struct multiboot_info* mb_info_addr) {
     print_memory_layout();
 
     init_pit();
+
+    asm volatile ("sti");
     
     char str[] = "Hello, world!";
 

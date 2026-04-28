@@ -1,12 +1,7 @@
 #include "song.h"
 #include "speaker/speaker.h"
 #include "libc/stdio.h"
-
-static void delay_ms(uint32_t ms) {
-    for (volatile uint32_t i = 0; i < ms * 10000; i++);
-}
-
-void play_sound(uint32_t frequency);
+#include "kernel/pit.h"
 
 void play_song_impl(Song* song) {
     enable_speaker();
@@ -16,10 +11,9 @@ void play_song_impl(Song* song) {
         if (note->frequency == 0) {
             stop_sound();
         } else {
-            printf("Note: %u Hz, %u ms\n", note->frequency, note->duration);
             play_sound(note->frequency);
         }
-        delay_ms(note->duration);
+        sleep_interrupt(note->duration);
         stop_sound();
     }
 
