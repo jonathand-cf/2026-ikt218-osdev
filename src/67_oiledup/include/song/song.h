@@ -29,6 +29,9 @@ typedef struct {
 SongPlayer* create_song_player();
 void play_song_impl(Song* song);
 void play_song(Song* song);
+// Non-blocking playback using PIT ticks
+void start_song(Song* song);
+void stop_song(void);
 
 // Note arrays: declared as extern; definitions live in music.c
 extern Note music_1[];

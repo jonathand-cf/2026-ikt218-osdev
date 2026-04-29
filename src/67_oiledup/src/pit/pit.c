@@ -7,10 +7,14 @@ static inline void outb(uint16_t port, uint8_t value) {
 }
 
 static volatile uint32_t ticks = 0;
+static void (*tick_callback)(void) = 0;
 
 void timer_interrupt_handler(registers_t *regs) {
     (void)regs;
     ticks++;
+    if (tick_callback) {
+        tick_callback();
+    }
 }
 
 uint32_t get_current_tick() {
@@ -24,6 +28,10 @@ void init_pit() {
     outb(PIT_CMD_PORT, 0x36);  // channel 0, lobyte/hibyte, square wave
     outb(PIT_CHANNEL0_PORT, (uint8_t)(divisor & 0xFF));
     outb(PIT_CHANNEL0_PORT, (uint8_t)((divisor >> 8) & 0xFF));
+}
+
+void register_pit_tick_callback(pit_tick_callback_t cb) {
+    tick_callback = cb;
 }
 
 void sleep_busy(uint32_t milliseconds) {

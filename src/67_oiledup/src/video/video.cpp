@@ -6,6 +6,7 @@
 #include "kernel/terminal.h"
 #include "libc/stdio.h"
 #include "starwars_data.h"
+#include "song/song.h"
 
 static const char* advance_one_line(const char* text) {
     if (*text == '\r') {
@@ -64,9 +65,16 @@ static void print_range(const char* begin, const char* end) {
 
 void show_video() {
     terminal_clear();
+    /* start the Star Wars theme after a delay */
+    Song starwars = { starwars_theme, starwars_theme_len };
+    const uint32_t music_delay_ms = 10000; /* 10 seconds */
+    uint32_t music_elapsed_ms = 0;
+    bool music_started = false;
+    // Just video things
     const char* cursor = STARWARS_TEXT;
     int frame_delay_ms = 100;
 
+    // Playing
     while (*cursor != '\0') {
         const char* line_start = cursor;
         const char* line_finish = line_end(line_start);
@@ -94,7 +102,18 @@ void show_video() {
         printf("\nPress q to quit\n");
         sleep_busy((uint32_t)frame_delay_ms);
 
+        /* accumulate time and start music after delay without blocking frames */
+        if (!music_started && starwars_theme_len > 0) {
+            music_elapsed_ms += (uint32_t)frame_delay_ms;
+            if (music_elapsed_ms >= music_delay_ms) {
+                start_song(&starwars);
+                music_started = true;
+            }
+        }
+        // q for quit
+
         if (keyboard_has_input() && getchar() == 'q') {
+            if (music_started) stop_song();
             break;
         }
     }

@@ -34,6 +34,9 @@ void init_pit();
 uint32_t get_current_tick();
 void sleep_interrupt(uint32_t milliseconds);
 void sleep_busy(uint32_t milliseconds);
+// Register a per-tick callback called from the PIT interrupt (called every tick)
+typedef void (*pit_tick_callback_t)(void);
+void register_pit_tick_callback(pit_tick_callback_t cb);
 
 #ifdef __cplusplus
 }

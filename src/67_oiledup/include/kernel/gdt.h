@@ -61,7 +61,7 @@ extern struct gdt_entry gdt[6];
 extern struct gdt_ptr gp;
 
 extern void gdt_flush();
-extern void gdt_install();
+extern void init_gdt();
 
 #ifdef __cplusplus
 }

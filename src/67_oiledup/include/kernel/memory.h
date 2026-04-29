@@ -10,6 +10,11 @@
 #include "libc/stdint.h"
 #include "libc/stddef.h" /* Include standard definitions */
 
+// Fucking shit plus plus
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Definition of a struct that represents a memory allocation.
  * It contains a status field (0 or 1) indicating if the memory
@@ -41,5 +46,9 @@ extern void* memset16 (void *ptr, uint16_t value, size_t num); /* Sets num bytes
 
 /* Other helper functions*/
 void print_memory_layout();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

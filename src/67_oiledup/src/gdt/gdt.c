@@ -37,7 +37,7 @@ static void write_tss(int32_t num, uint16_t ss0, uint32_t esp0)
    tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x13;
 }
 
-void gdt_install() {
+void init_gdt() {
     gp.limit = (sizeof(struct gdt_entry) * 6) - 1;
     gp.base = (unsigned int)&gdt;
 
